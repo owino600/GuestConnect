@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS guests (
+
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    mac_address VARCHAR(20) NOT NULL UNIQUE,
+
+    device_name VARCHAR(255) NULL,
+
+    first_seen DATETIME NOT NULL,
+
+    last_seen DATETIME NOT NULL,
+
+    survey_shown BOOLEAN DEFAULT FALSE,
+
+    survey_completed BOOLEAN DEFAULT FALSE,
+
+    last_survey_date DATETIME NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+
+);
