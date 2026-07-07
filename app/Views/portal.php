@@ -19,15 +19,11 @@
 
     <div class="login-card">
 
-        <!-- Resort Logo -->
-
         <div class="logo">
 
             <img src="/images/logo.png" alt="Burch's Resort">
 
         </div>
-
-        <!-- Heading -->
 
         <h1>Burch's Resort</h1>
 
@@ -37,29 +33,33 @@
 
         </p>
 
-        <!-- Login Form -->
+        <?php if($showSurvey): ?>
+
+            <div class="survey">
+
+                🎉 We'd love your feedback after your stay.
+
+            </div>
+
+        <?php endif; ?>
 
         <form action="/authorize" method="POST">
 
-            <!-- Authentication -->
-
             <div class="form-group">
 
-                <label for="password">
+                <label>
 
-                    Password
+                    <?= htmlspecialchars($auth['label']) ?>
 
                 </label>
 
                 <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter Password">
+                    type="<?= $auth['type'] === 'password' ? 'password' : 'text' ?>"
+                    name="credential"
+                    placeholder="<?= htmlspecialchars($auth['placeholder']) ?>"
+                    required>
 
             </div>
-
-            <!-- Terms -->
 
             <div class="terms">
 
@@ -68,7 +68,8 @@
                     <input
                         type="checkbox"
                         id="terms"
-                        name="terms">
+                        name="terms"
+                        required>
 
                     I have read and agree to the
 
@@ -82,8 +83,6 @@
 
             </div>
 
-            <!-- Hidden UniFi Values -->
-
             <input
                 type="hidden"
                 name="mac"
@@ -93,8 +92,6 @@
                 type="hidden"
                 name="url"
                 value="<?= htmlspecialchars($url) ?>">
-
-            <!-- Login -->
 
             <button
                 type="submit"
@@ -107,11 +104,15 @@
 
         </form>
 
+        <div class="footer">
+
+            Powered by GuestConnect
+
+        </div>
+
     </div>
 
 </div>
-
-<!-- Terms Modal -->
 
 <div id="termsModal" class="modal">
 
@@ -129,7 +130,8 @@
 
             <p>
 
-                Your Terms & Conditions will appear here.
+                Your complete Burch's Resort Guest Wi-Fi Terms &
+                Conditions will be inserted here.
 
             </p>
 

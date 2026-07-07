@@ -3,29 +3,33 @@
 namespace GuestConnect\Controllers;
 
 use GuestConnect\Core\Controller;
-use GuestConnect\Services\UniFiService;
 
 class AuthController extends Controller
 {
     public function authorize(): void
     {
-        $mac = $_GET['mac'] ?? '';
-        $url = $_GET['url'] ?? '';
+        $credential = $_POST['credential'] ?? '';
 
-        $unifi = new UniFiService();
+        $mac = $_POST['mac'] ?? '';
 
-        if ($unifi->authorizeGuest($mac)) {
+        $url = $_POST['url'] ?? '';
 
-            if (!empty($url)) {
-                header("Location: " . $url);
-                exit;
-            }
+        $terms = isset($_POST['terms']);
 
-            echo "Internet Authorized.";
+        echo "<pre>";
 
-            return;
-        }
+        print_r([
 
-        echo "Unable to authorize guest.";
+            'credential' => $credential,
+
+            'mac' => $mac,
+
+            'url' => $url,
+
+            'termsAccepted' => $terms
+
+        ]);
+
+        echo "</pre>";
     }
 }
