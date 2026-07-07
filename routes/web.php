@@ -2,7 +2,14 @@
 
 use GuestConnect\Controllers\HomeController;
 use GuestConnect\Controllers\TestController;
+use GuestConnect\Controllers\UniFiController;
+use GuestConnect\Controllers\PortalController;
+use GuestConnect\Controllers\AuthController;
 
 $router->get('/', [HomeController::class, 'index']);
 
 $router->get('/test/guest', [TestController::class, 'guest']);
+
+$router->get('/test/unifi', [UniFiController::class, 'test']);
+$router->get('/login', [PortalController::class, 'login']);
+$router->get('/authorize', [AuthController::class, 'authorize']);
