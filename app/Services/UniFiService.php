@@ -52,4 +52,19 @@ class UniFiService extends Service
 
         }
     }
+    public function authorizeGuest(string $mac): bool
+    {
+        /*
+         * Temporary.
+         * Later this will call the UniFi API.
+         */
+
+       if (empty($mac)) {
+
+           return false;
+
+       }
+
+       return true;
+    }
 }

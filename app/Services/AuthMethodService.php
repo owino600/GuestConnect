@@ -2,21 +2,28 @@
 
 namespace GuestConnect\Services;
 
+use GuestConnect\Repositories\SettingsRepository;
+
 class AuthMethodService
 {
+    private SettingsRepository $settings;
+
+    public function __construct()
+    {
+        $this->settings = new SettingsRepository();
+    }
+
     public function getMethod(): array
     {
-        /*
-         * Later this will come from the database.
-         */
+        $type = $this->settings->get('authentication_type', 'password');
 
         return [
 
-            'type' => 'password',
+            'type' => $type,
 
-            'label' => 'Password',
+            'label' => ucfirst($type),
 
-            'placeholder' => 'Enter Wi-Fi Password'
+            'placeholder' => 'Enter ' . ucfirst($type)
 
         ];
     }
