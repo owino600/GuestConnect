@@ -2,20 +2,21 @@
 
 namespace GuestConnect\Services;
 
-use GuestConnect\Repositories\SettingsRepository;
-
 class AuthMethodService
 {
-    private SettingsRepository $settings;
+    private SettingsService $settings;
 
     public function __construct()
     {
-        $this->settings = new SettingsRepository();
+        $this->settings = new SettingsService();
     }
 
     public function getMethod(): array
     {
-        $type = $this->settings->get('authentication_type', 'password');
+        $type = $this->settings->get(
+            'authentication_type',
+            'password'
+        );
 
         return [
 

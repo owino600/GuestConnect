@@ -2,21 +2,18 @@
 
 namespace GuestConnect\Services;
 
-use GuestConnect\Repositories\SettingsRepository;
-
 class AuthenticationService
 {
-    private SettingsRepository $settings;
+    private SettingsService $settings;
 
     public function __construct()
     {
-        $this->settings = new SettingsRepository();
+        $this->settings = new SettingsService();
     }
 
     public function validate(string $credential): bool
     {
-        $password = $this->settings->get('wifi_password');
-
-        return $credential === $password;
+        return $credential ===
+            $this->settings->get('wifi_password');
     }
 }
