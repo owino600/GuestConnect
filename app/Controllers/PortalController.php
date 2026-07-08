@@ -37,6 +37,8 @@ class PortalController extends Controller
 
         $auth = $authService->getMethod();
 
+        $settings = new \GuestConnect\Services\SettingsService();
+
         $this->view('portal', [
 
             'guest' => $guest,
@@ -51,8 +53,7 @@ class PortalController extends Controller
 
             'showSurvey' => $showSurvey,
 
-            'auth' => $auth
+            'settings' => $settings->all()
 
         ]);
-    }
 }

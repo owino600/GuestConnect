@@ -19,3 +19,5 @@ $router->get('/admin', [AdminController::class, 'dashboard']);
 $router->get('/admin/portal', [AdminController::class,'portal']);
 
 $router->post('/admin/portal', [AdminController::class,'savePortal']);
+$router->get('/admin/branding', [AdminController::class, 'branding']);
+$router->post('/admin/branding', [AdminController::class, 'saveBranding']);

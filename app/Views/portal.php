@@ -7,9 +7,28 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Burch's Resort Guest Wi-Fi</title>
+    <title>
+
+    <?= htmlspecialchars($settings['portal_name']) ?>
+
+    Guest Wi-Fi
+
+    </title>
 
     <link rel="stylesheet" href="/css/portal.css">
+    <style>
+
+    :root{
+
+        --primary-color:
+        <?= htmlspecialchars($settings['primary_color']) ?>;
+
+        --secondary-color:
+        <?= htmlspecialchars($settings['secondary_color']) ?>;
+
+    }
+
+    </style>
 
 </head>
 
@@ -25,11 +44,20 @@
 
         </div>
 
-        <h1>Burch's Resort</h1>
+        <h1>
+
+        <?= htmlspecialchars($settings['portal_name']) ?>
+
+        </h1>
+        <h2>
+
+        <?= htmlspecialchars($settings['welcome_heading']) ?>
+
+        </h2>
 
         <p class="subtitle">
 
-            Enjoy Endless and Secure internet connectivity.
+            <?= htmlspecialchars($settings['welcome_message']) ?>
 
         </p>
 
@@ -130,8 +158,7 @@
 
             <p>
 
-                Your complete Burch's Resort Guest Wi-Fi Terms &
-                Conditions will be inserted here.
+                <?= nl2br(htmlspecialchars($settings['terms_conditions'])) ?>
 
             </p>
 
