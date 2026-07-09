@@ -4,6 +4,8 @@ namespace GuestConnect\Controllers\Admin;
 
 use GuestConnect\Core\Controller;
 use GuestConnect\Services\SettingsService;
+use GuestConnect\Core\Session;
+use GuestConnect\Services\LogService;
 
 class AdminController extends Controller
 {
@@ -65,6 +67,16 @@ class AdminController extends Controller
         $settings->set('primary_color', $_POST['primary_color'] ?? '#00695C');
 
         $settings->set('secondary_color', $_POST['secondary_color'] ?? '#FFFFFF');
+
+        // Log the change
+        $logger = new LogService();
+        $logger->info('Branding settings updated.');
+
+        //flash message
+        Session::flash(
+            'success',
+            'Branding settings saved successfully.'
+        );
 
         header("Location: /admin/branding");
 

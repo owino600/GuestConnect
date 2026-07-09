@@ -6,6 +6,7 @@ use Dotenv\Dotenv;
 use GuestConnect\Core\App;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+GuestConnect\Core\Session::start();
 
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();

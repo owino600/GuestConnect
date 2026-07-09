@@ -76,5 +76,13 @@ class AuthController extends Controller
             header("Refresh:2; url=" . $url);
 
         }
+
+        $logger = new LogService();
+        $logger->warning(
+            "Authentication failed for MAC {$mac}"
+        );
+        $logger->info(
+            "Authentication successful for MAC {$mac}"
+        );
     }
 }
