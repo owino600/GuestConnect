@@ -91,23 +91,25 @@
 
             <div class="terms">
 
-                <label>
+               <label class ="terms-lable">
 
-                    <input
+                   <input
                         type="checkbox"
                         id="terms"
                         name="terms"
                         required>
+                   <span>
 
-                    I have read and agree to the
+                      I have read and agree to the
 
-                    <a href="#" id="viewTerms">
+                      <a href="#" id="viewTerms">
 
-                        Terms & Conditions
+                         Terms & Conditions
 
-                    </a>
+                      </a>
+                   </span>
 
-                </label>
+               </label>
 
             </div>
 

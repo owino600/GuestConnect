@@ -13,24 +13,19 @@ class AuthController extends Controller
     public function authorize(): void
     {
         $credential = trim($_POST['credential'] ?? '');
-
         $mac = $_POST['mac'] ?? '';
-
         $url = $_POST['url'] ?? '';
 
+        // Ensure Terms & Conditions are accepted
         if (!isset($_POST['terms'])) {
-
             exit("Please accept the Terms & Conditions.");
-
         }
 
         $authentication = new AuthenticationService();
-
         $method = (new AuthMethodService())->getMethod();
-
         $repository = new LoginRepository();
 
-        // Validate the credential
+        // Validate authentication
         if (!$authentication->validate($credential)) {
 
             $repository->create([
@@ -40,13 +35,12 @@ class AuthController extends Controller
             ]);
 
             exit("Invalid password.");
-
         }
 
-        // Authorize the device on UniFi
+        // Authorize guest on UniFi
         $authorization = new AuthorizationService();
 
-        if (!$authorization->authorizeGuest($mac)) {
+        if (!$authorization->authorize($mac)) {
 
             $repository->create([
                 'mac'    => $mac,
@@ -55,7 +49,6 @@ class AuthController extends Controller
             ]);
 
             exit("Unable to authorize device.");
-
         }
 
         // Record successful login
@@ -65,24 +58,13 @@ class AuthController extends Controller
             'status' => 'SUCCESS'
         ]);
 
-        echo "<h2>Authentication Successful</h2>";
-
-        echo "<p>Your device has been authorized.</p>";
-
+        // Redirect guest
         if (!empty($url)) {
-
-            echo "<p>Redirecting...</p>";
-
-            header("Refresh:2; url=" . $url);
-
+            header("Location: " . $url);
+        } else {
+            header("Location: /");
         }
 
-        $logger = new LogService();
-        $logger->warning(
-            "Authentication failed for MAC {$mac}"
-        );
-        $logger->info(
-            "Authentication successful for MAC {$mac}"
-        );
+        exit;
     }
 }

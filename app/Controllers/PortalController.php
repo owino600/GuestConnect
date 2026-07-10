@@ -5,6 +5,7 @@ namespace GuestConnect\Controllers;
 use GuestConnect\Core\Controller;
 use GuestConnect\Services\GuestService;
 use GuestConnect\Services\AuthMethodService;
+use GuestConnect\Services\SettingsService;
 
 class PortalController extends Controller
 {
@@ -22,6 +23,8 @@ class PortalController extends Controller
 
         $authService = new AuthMethodService();
 
+        $settings = new SettingsService();
+
         $guest = null;
 
         $showSurvey = false;
@@ -37,8 +40,6 @@ class PortalController extends Controller
 
         $auth = $authService->getMethod();
 
-        $settings = new \GuestConnect\Services\SettingsService();
-
         $this->view('portal', [
 
             'guest' => $guest,
@@ -53,7 +54,10 @@ class PortalController extends Controller
 
             'showSurvey' => $showSurvey,
 
+            'auth' => $auth,
+
             'settings' => $settings->all()
 
         ]);
+    }
 }

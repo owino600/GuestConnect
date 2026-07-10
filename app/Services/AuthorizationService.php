@@ -2,17 +2,11 @@
 
 namespace GuestConnect\Services;
 
-class AuthorizationService
+class AuthorizationService extends Service
 {
-    private UniFiService $uniFi;
-
-    public function __construct()
+    public function authorize(string $mac): bool
     {
-        $this->uniFi = new UniFiService();
-    }
-
-    public function authorizeGuest(string $mac): bool
-    {
-        return $this->uniFi->authorizeGuest($mac);
+        return (new UniFiService())
+            ->authorizeGuest($mac);
     }
 }
