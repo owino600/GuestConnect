@@ -88,10 +88,19 @@
                     required>
 
             </div>
+            <?php if (!empty($_SESSION['error'])) : ?>
+
+            <div class="error-message">
+                <?= htmlspecialchars($_SESSION['error']) ?>
+            </div>
+
+            <?php unset($_SESSION['error']); ?>
+
+            <?php endif; ?>
 
             <div class="terms">
 
-               <label class ="terms-lable">
+               <label class ="terms-label">
 
                    <input
                         type="checkbox"

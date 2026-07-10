@@ -1,9 +1,29 @@
-const terms=document.getElementById("terms");
+document.addEventListener("DOMContentLoaded", () => {
 
-const button=document.getElementById("connectBtn");
+    const form = document.querySelector("form");
 
-terms.addEventListener("change",()=>{
+    const button = document.getElementById("connectBtn");
 
-    button.disabled=!terms.checked;
+    const terms = document.getElementById("terms");
+
+    if (terms) {
+
+        button.disabled = !terms.checked;
+
+        terms.addEventListener("change", () => {
+
+            button.disabled = !terms.checked;
+
+        });
+
+    }
+
+    form.addEventListener("submit", () => {
+
+        button.disabled = true;
+
+        button.innerHTML = "Connecting...";
+
+    });
 
 });

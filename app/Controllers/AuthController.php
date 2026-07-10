@@ -34,7 +34,11 @@ class AuthController extends Controller
                 'status' => 'FAILED'
             ]);
 
-            exit("Invalid password.");
+            $_SESSION['error'] = "Invalid Wi-Fi password.";
+
+            header("Location: /login?mac=".$mac);
+
+            exit;
         }
 
         // Authorize guest on UniFi
@@ -48,7 +52,12 @@ class AuthController extends Controller
                 'status' => 'FAILED'
             ]);
 
-            exit("Unable to authorize device.");
+            $_SESSION['error'] =
+                "Unable to connect you to the network.";
+
+            header("Location: /login?mac=".$mac);
+
+            exit;
         }
 
         // Record successful login

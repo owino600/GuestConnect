@@ -31,9 +31,9 @@ class GuestService extends Service
             ];
         }
 
-        $this->repository->updateLastSeen($mac);
+        $this->repository->incrementVisits($mac);
 
-        // Refresh guest data after updating
+        // Refresh guest data
         $guest = $this->repository->findByMac($mac);
 
         return [

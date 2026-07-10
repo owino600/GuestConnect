@@ -46,4 +46,19 @@ class GuestRepository
 
         $stmt->execute([$mac]);
     }
+
+    public function incrementVisits(string $mac): void
+    {
+        $sql = "
+            UPDATE guests
+            SET
+                visit_count = visit_count + 1,
+                last_seen = NOW()
+            WHERE mac_address = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([$mac]);
+    }
 }

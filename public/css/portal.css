@@ -361,3 +361,10 @@ body{
     overflow-x:hidden;
 
 }
+
+.error-message {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-top: 6px;
+    margin-bottom: 15px;
+}
