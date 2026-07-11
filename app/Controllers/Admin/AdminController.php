@@ -82,4 +82,36 @@ class AdminController extends Controller
 
         exit;
     }
+
+    public function authentication(): void
+    {
+        $settings = new SettingsService();
+
+        $this->adminView('authentication', [
+            'settings' => $settings->all()
+        ]);
+    }
+
+    public function saveAuthentication(): void
+    {
+        $settings = new SettingsService();
+
+        $settings->set(
+            'authentication_type',
+            $_POST['authentication_method'] ?? 'password'
+        );
+
+        $settings->set(
+            'wifi_password',
+            $_POST['wifi_password'] ?? ''
+        );
+
+        Session::flash(
+            'success',
+            'Authentication settings saved successfully.'
+        );
+
+        header("Location: /admin/authentication");
+        exit;
+    }
 }

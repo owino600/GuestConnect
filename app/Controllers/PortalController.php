@@ -11,13 +11,18 @@ class PortalController extends Controller
 {
     public function login(): void
     {
-        $mac = $_GET['mac'] ?? '';
+
+        // UniFi 10.x sends id instead of mac
+        $mac = $_GET['id']
+            ?? $_GET['mac']
+            ?? '';
 
         $ap = $_GET['ap'] ?? '';
 
         $ssid = $_GET['ssid'] ?? '';
 
         $url = $_GET['url'] ?? '';
+        $token = $_GET['token'] ?? $_GET['t'] ?? '';
 
         $guestService = new GuestService();
 
@@ -51,6 +56,7 @@ class PortalController extends Controller
             'ssid' => $ssid,
 
             'url' => $url,
+            'token' => $token,
 
             'showSurvey' => $showSurvey,
 

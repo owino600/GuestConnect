@@ -41,6 +41,7 @@ class AuthController extends Controller
             exit;
         }
 
+
         // Authorize guest on UniFi
         $authorization = new AuthorizationService();
 

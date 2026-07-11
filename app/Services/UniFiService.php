@@ -11,6 +11,7 @@ class UniFiService extends Service
 {
     private Client $client;
     private string $baseUrl;
+    private string $csrfToken = '';
 
     public function __construct()
     {
@@ -37,7 +38,7 @@ class UniFiService extends Service
     {
         try {
 
-            $this->client->post(
+            $response = $this->client->post(
                 '/api/auth/login',
                 [
                     'json' => [
@@ -46,6 +47,13 @@ class UniFiService extends Service
                     ]
                 ]
             );
+            $this->csrfToken =
+                $response->getHeaderLine('X-Csrf-Token');
+
+            if (empty($this->csrfToken)) {
+                $this->csrfToken =
+                    $response->getHeaderLine('X-Updated-Csrf-Token');
+            }
 
             return true;
 
@@ -75,6 +83,10 @@ class UniFiService extends Service
             $response = $this->client->post(
                 "/proxy/network/api/s/{$site}/cmd/stamgr",
                 [
+                    'headers' => [
+                        'X-Csrf-Token' => $this->csrfToken,
+                        'Accept' => 'application/json'
+                    ],
                     'json' => [
                         'cmd'     => 'authorize-guest',
                         'mac'     => strtolower($mac),
@@ -82,20 +94,25 @@ class UniFiService extends Service
                             'UNIFI_AUTHORIZE_MINUTES',
                             1440
                         )
-                    ]
+                     ]
                 ]
             );
 
             return $response->getStatusCode() === 200;
 
-        } catch (GuzzleException $e) {
+        } catch (\Throwable $e) {
 
-            (new LogService())->error(
-                "Guest Authorization Failed: " .
-                $e->getMessage()
-            );
+           echo "ERROR:\n";
+           echo $e->getMessage() . PHP_EOL;
 
-            return false;
+           if (method_exists($e, 'getResponse') && $e->getResponse()) {
+
+               echo "BODY:\n";
+               echo $e->getResponse()->getBody()->getContents();
+
+           }
+
+           exit;
         }
     }
 

@@ -132,6 +132,11 @@
                 name="url"
                 value="<?= htmlspecialchars($url) ?>">
 
+            <input
+                type="hidden"
+                name="token"
+                value="<?= htmlspecialchars($token ?? '') ?>">
+
             <button
                 type="submit"
                 id="connectBtn"
