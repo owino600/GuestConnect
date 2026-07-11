@@ -77,4 +77,12 @@ class AuthController extends Controller
 
         exit;
     }
+    public function sessions(): void
+    {
+        $clients = (new UniFiService())->getOnlineClients();
+
+        $this->adminView('sessions', [
+            'clients' => $clients
+        ]);
+    }
 }

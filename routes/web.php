@@ -26,3 +26,4 @@ $router->get('/admin/branding', [AdminController::class, 'branding']);
 $router->post('/admin/branding', [AdminController::class, 'saveBranding']);
 $router->get('/admin/authentication', [AdminController::class, 'authentication']);
 $router->post('/admin/authentication', [AdminController::class, 'saveAuthentication']);
+$router->get('/admin/sessions', [AdminController::class, 'sessions']);
