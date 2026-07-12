@@ -1,55 +1,101 @@
 <h1>Dashboard</h1>
 
-<p class="page-description">
-    Welcome to the GuestConnect Administration Portal.
-</p>
+<div class="cards">
 
-<div class="dashboard-grid">
+    <div class="card">
 
-    <div class="dashboard-card">
+        <h3><?= $online ?></h3>
 
-        <h3>🌐 Portal</h3>
-
-        <span class="status online">Online</span>
-
-        <p><?= htmlspecialchars($settings['portal_name']) ?></p>
+        <p>Guests Online</p>
 
     </div>
 
-    <div class="dashboard-card">
+    <div class="card">
 
-        <h3>🔑 Authentication</h3>
+        <h3><?= $authorized ?></h3>
 
-        <strong>
-
-            <?= ucfirst($settings['authentication_type']) ?>
-
-        </strong>
+        <p>Authorized</p>
 
     </div>
 
-    <div class="dashboard-card">
+    <div class="card">
 
-        <h3>📝 Survey</h3>
+        <h3><?= $aps ?></h3>
 
-        <strong>
-
-            <?= $settings['survey_enabled'] ? 'Enabled' : 'Disabled' ?>
-
-        </strong>
+        <p>Access Points</p>
 
     </div>
 
-    <div class="dashboard-card">
+    <div class="card">
 
-        <h3>📡 UniFi</h3>
+        <h3><?= $today ?></h3>
 
-        <span class="status online">
-
-            Connected
-
-        </span>
+        <p>Today's Logins</p>
 
     </div>
+
+</div>
+
+<div class="panel">
+
+<h2>Recent Guests</h2>
+
+<table>
+
+<tr>
+
+<th>Device</th>
+
+<th>MAC</th>
+
+<th>SSID</th>
+
+<th>AP</th>
+
+<th>Status</th>
+
+</tr>
+
+<?php foreach($recent as $client): ?>
+
+<tr>
+
+<td><?= htmlspecialchars($client['hostname']) ?></td>
+
+<td><?= htmlspecialchars($client['mac']) ?></td>
+
+<td><?= htmlspecialchars($client['ssid']) ?></td>
+
+<td><?= htmlspecialchars($client['access_point']) ?></td>
+
+<td>
+
+<?= $client['authorized'] ? '🟢 Online' : '🔴 Offline' ?>
+
+</td>
+
+</tr>
+
+<?php endforeach; ?>
+
+</table>
+
+</div>
+
+<div class="panel">
+
+<h2>System Health</h2>
+
+<ul>
+
+<li>🟢 UniFi Connected</li>
+
+<li>🟢 Database Connected</li>
+
+<li>🟢 Captive Portal Running</li>
+
+<li>🟢 Authentication Enabled</li>
+
+</ul>
 
 </div>

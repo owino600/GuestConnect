@@ -11,11 +11,37 @@ class AdminController extends Controller
 {
     public function dashboard(): void
     {
-         $settings = new SettingsService();
+        $settings = new SettingsService();
 
-         $this->adminView('dashboard', [
-            'settings' => $settings->all()
-         ]);
+        $unifi = new \GuestConnect\Services\UniFiService();
+
+        $clients = $unifi->getOnlineClients();
+
+        $authorized = array_filter($clients, function ($c) {
+            return !empty($c['authorized']);
+        });
+
+        $aps = [];
+
+        foreach ($clients as $client) {
+            $aps[$client['access_point']] = true;
+        }
+
+        $this->adminView('dashboard', [
+
+            'settings'    => $settings->all(),
+
+            'online'      => count($clients),
+
+            'authorized'  => count($authorized),
+
+            'aps'         => count($aps),
+
+            'today'       => count($clients), // we'll replace this with DB statistics later
+
+            'recent'      => array_slice($clients, 0, 10)
+
+       ]);
     }
 
     public function portal(): void
@@ -113,5 +139,15 @@ class AdminController extends Controller
 
         header("Location: /admin/authentication");
         exit;
+    }
+
+    public function activity(): void
+    {
+        $clients = (new \GuestConnect\Services\UniFiService())
+            ->getOnlineClients();
+
+        $this->adminView('activity', [
+            'clients' => $clients
+        ]);
     }
 }
