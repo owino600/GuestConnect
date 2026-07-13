@@ -6,9 +6,9 @@
 
 </div>
 
-<div class="stats">
+<div class="stat-grid">
 
-    <div class="card">
+    <div class="start-card">
         <h3><?= count($clients) ?></h3>
         <p>Currently Online</p>
     </div>
@@ -53,7 +53,7 @@
 
         <strong>Status:</strong>
 
-        <span class="status active">
+        <span class="status-online">
 
             Active
 

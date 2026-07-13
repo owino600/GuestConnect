@@ -1,3 +1,8 @@
+<?php
+
+use GuestConnect\Core\Session;
+
+?>
 <div class="sidebar">
 
     <div class="brand">
@@ -33,3 +38,37 @@
 </div>
 
 <div class="content">
+
+<?php if($message = Session::getFlash('success')): ?>
+
+<div id="toast" class="toast toast-success">
+
+    <div class="toast-icon">✓</div>
+
+    <div class="toast-message">
+
+        <?= htmlspecialchars($message) ?>
+
+    </div>
+
+</div>
+
+<script>
+
+setTimeout(function(){
+
+    const toast = document.getElementById('toast');
+
+    if(toast){
+
+        toast.classList.add('hide');
+
+        setTimeout(() => toast.remove(),500);
+
+    }
+
+},3000);
+
+</script>
+
+<?php endif; ?>

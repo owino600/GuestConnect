@@ -67,17 +67,21 @@ class AdminController extends Controller
             $_POST['welcome_message'] ?? ''
         );
 
+        Session::flash(
+            'success',
+            'Portal settings saved successfully.'
+        );
+
         header("Location: /admin/portal");
         exit;
     }
+
     public function branding(): void
     {
         $settings = new SettingsService();
 
         $this->adminView('branding', [
-
             'settings' => $settings->all()
-
         ]);
     }
     public function saveBranding(): void
@@ -94,11 +98,103 @@ class AdminController extends Controller
 
         $settings->set('secondary_color', $_POST['secondary_color'] ?? '#FFFFFF');
 
-        // Log the change
-        $logger = new LogService();
-        $logger->info('Branding settings updated.');
+        $settings->set('background_color', $_POST['background_color'] ?? '#f5f7fb');
 
-        //flash message
+        $uploadDir = __DIR__ . '/../../../public/images/uploads/';
+
+        if (!is_dir($uploadDir)) {
+
+            mkdir($uploadDir,0755,true);
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Background
+        |--------------------------------------------------------------------------
+        */
+
+        if(isset($_POST['delete_background'])){
+
+            $current = $settings->all()['background_image'] ?? '';
+
+            if($current && file_exists($uploadDir.$current)){
+
+                unlink($uploadDir.$current);
+
+            }
+
+            $settings->set('background_image','');
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Reset Colour
+        |--------------------------------------------------------------------------
+        */
+
+        if(isset($_POST['reset_background_colour'])){
+
+            $settings->set(
+                'background_color',
+                '#f5f7fb'
+            );
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Upload New Image
+        |--------------------------------------------------------------------------
+        */
+
+        if(
+            isset($_FILES['background_image']) &&
+            $_FILES['background_image']['error']===UPLOAD_ERR_OK
+        ){
+
+            $extension=strtolower(
+                pathinfo(
+                    $_FILES['background_image']['name'],
+                    PATHINFO_EXTENSION
+                )
+            );
+
+            $allowed=['jpg','jpeg','png','webp'];
+
+            if(in_array($extension,$allowed)){
+
+                // remove old image first
+
+                $current=$settings->all()['background_image'] ?? '';
+
+                if($current && file_exists($uploadDir.$current)){
+
+                    unlink($uploadDir.$current);
+
+                }
+
+                $filename='portal_background.'.$extension;
+
+                move_uploaded_file(
+                    $_FILES['background_image']['tmp_name'],
+                    $uploadDir.$filename
+                );
+
+                $settings->set(
+                    'background_image',
+                    $filename
+                );
+
+            }
+
+        }
+
+        (new LogService())->info(
+            'Branding updated.'
+        );
+
         Session::flash(
             'success',
             'Branding settings saved successfully.'

@@ -16,15 +16,41 @@
     </title>
 
     <link rel="stylesheet" href="/css/portal.css">
-    <style>
+    <?php
 
+    $background = !empty($settings['background_image'])
+
+    ? "/images/uploads/".$settings['background_image']
+
+    : null;
+
+    ?>
+
+    <style>
     :root{
 
-        --primary-color:
-        <?= htmlspecialchars($settings['primary_color']) ?>;
+        --primary-color: <?= htmlspecialchars($settings['primary_color'] ?? '#2563eb') ?>;
 
-        --secondary-color:
-        <?= htmlspecialchars($settings['secondary_color']) ?>;
+        --secondary-color: <?= htmlspecialchars($settings['secondary_color'] ?? '#ffffff') ?>;
+
+    }
+    .background{
+
+    <?php if(!empty($settings['background_image'])): ?>
+
+        background:
+            linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+            url("/images/uploads/<?= htmlspecialchars($settings['background_image']) ?>");
+
+        background-size:cover;
+
+        background-position:center;
+
+    <?php else: ?>
+
+        background: <?= htmlspecialchars($settings['background_color'] ?? '#f5f7fb') ?>;
+
+    <?php endif; ?>
 
     }
 

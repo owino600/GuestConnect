@@ -51,6 +51,8 @@ class SettingsService
 
              'background_image' => $this->get('background_image'),
 
+             'background_color' => $this->get('background_color'),
+
              'primary_color' => $this->get('primary_color'),
 
              'secondary_color' => $this->get('secondary_color'),

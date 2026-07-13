@@ -1,32 +1,39 @@
-<h1>Portal Settings</h1>
+<div class="form-container">
 
-<form method="POST" action="/admin/portal">
+    <div class="page-header">
+        <h1 class="page-title">Portal Settings</h1>
+        <p class="page-subtitle">
+            Configure how your Wi-Fi portal appears to guests.
+        </p>
+    </div>
 
-    <div class="card">
+    <div class="form-card">
 
-        <label>Portal Name</label>
+        <form method="POST" action="/admin/portal">
 
-        <input
-            type="text"
-            name="portal_name"
-            value="<?= htmlspecialchars($settings['portal_name']) ?>">
+            <div class="form-group">
+                <label>Portal Name</label>
+                <input
+                    type="text"
+                    name="portal_name"
+                    value="<?= htmlspecialchars($settings['portal_name'] ?? '') ?>">
+            </div>
+
+            <div class="form-group">
+                <label>Welcome Message</label>
+
+                <textarea
+                    rows="5"
+                    name="welcome_message"><?= htmlspecialchars($settings['welcome_message'] ?? '') ?></textarea>
+
+            </div>
+
+            <button class="btn-primary">
+                Save Changes
+            </button>
+
+        </form>
 
     </div>
 
-    <div class="card">
-
-        <label>Welcome Message</label>
-
-        <textarea
-            name="welcome_message"
-            rows="5"><?= htmlspecialchars($settings['welcome_message']) ?></textarea>
-
-    </div>
-
-    <button class="btn">
-
-        Save Changes
-
-    </button>
-
-</form>
+</div>

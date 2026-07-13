@@ -28,14 +28,15 @@ class SettingsRepository
 
     public function set(string $key, mixed $value): void
     {
-        $stmt = Database::connection()->prepare(
-            "UPDATE settings
-             SET setting_value = :value
-             WHERE setting_key = :key"
-        );
+        $stmt = Database::connection()->prepare("
+            INSERT INTO settings (setting_key, setting_value)
+            VALUES (:key, :value)
+            ON DUPLICATE KEY UPDATE
+                setting_value = VALUES(setting_value)
+        ");
 
         $stmt->execute([
-            'key' => $key,
+            'key'   => $key,
             'value' => $value
         ]);
     }
