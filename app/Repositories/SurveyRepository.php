@@ -7,21 +7,21 @@ use GuestConnect\Repositories\SurveyRepository;
 class SurveyService
 {
     private SurveyRepository $repository;
+    private SettingsService $settings;
 
     public function __construct()
     {
         $this->repository = new SurveyRepository();
+        $this->settings = new SettingsService();
     }
 
     /**
-     * Ensure a survey record exists.
+     * Ensure survey record exists.
      */
     public function ensureGuest(int $guestId): void
     {
         if (!$this->repository->getByGuestId($guestId)) {
-
             $this->repository->create($guestId);
-
         }
     }
 
@@ -32,6 +32,10 @@ class SurveyService
     {
         $this->ensureGuest($guestId);
 
+        if ($seconds <= 0) {
+            return;
+        }
+
         $this->repository->addConnectedSeconds(
             $guestId,
             $seconds
@@ -39,7 +43,7 @@ class SurveyService
     }
 
     /**
-     * Total accumulated time.
+     * Total accumulated connection time.
      */
     public function getConnectedTime(int $guestId): int
     {
@@ -68,39 +72,47 @@ class SurveyService
         return !empty($survey['survey_completed']);
     }
 
-    public function markShown(int $guestId): void
-    {
-        $this->repository->markShown($guestId);
-    }
-
-    public function markCompleted(int $guestId): void
-    {
-        $this->repository->markCompleted($guestId);
-    }
-
+    /**
+     * Decide if the survey should be shown.
+     */
     public function shouldShowSurvey(int $guestId): bool
     {
-        $survey = $this->repository->findByGuest($guestId);
+        $this->ensureGuest($guestId);
+
+        $survey = $this->repository->getByGuestId($guestId);
 
         if (!$survey) {
             return false;
         }
 
-        if ($survey['survey_completed']) {
+        // Already completed
+        if (!empty($survey['survey_completed'])) {
             return false;
         }
 
-        $settings = new SettingsService();
+        $showOnce = (int)$this->settings->get(
+            'survey_show_once',
+            1
+        );
 
-        $showOnce = (int)$settings->get('survey_show_once', 1);
-
-        if ($showOnce && $survey['survey_shown']) {
+        if (
+            $showOnce &&
+            !empty($survey['survey_shown'])
+        ) {
             return false;
         }
 
-        $delay = (int)$settings->get('survey_delay', 6);
+        $delay = (int)$this->settings->get(
+            'survey_delay',
+            6
+        );
 
-        $unit = $settings->get('survey_unit', 'hours');
+        $unit = strtolower(
+            $this->settings->get(
+                'survey_unit',
+                'hours'
+            )
+        );
 
         switch ($unit) {
 
@@ -114,9 +126,29 @@ class SurveyService
 
             default:
                 $threshold = $delay * 3600;
+                break;
         }
 
-        return $survey['connected_seconds'] >= $threshold;
+        return (
+            (int)$survey['connected_seconds']
+            >=
+            $threshold
+        );
     }
 
+    /**
+     * Mark survey as shown.
+     */
+    public function markShown(int $guestId): void
+    {
+        $this->repository->markShown($guestId);
+    }
+
+    /**
+     * Mark survey as completed.
+     */
+    public function markCompleted(int $guestId): void
+    {
+        $this->repository->markCompleted($guestId);
+    }
 }

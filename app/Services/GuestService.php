@@ -39,7 +39,9 @@ class GuestService extends Service
         return [
             'new' => false,
             'guest' => $guest,
-            'showSurvey' => $this->surveyService->shouldShowSurvey($guest)
+            'showSurvey' => $this->surveyService->shouldShowSurvey(
+                (int)$guest['id']
+            )
         ];
     }
 }
