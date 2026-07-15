@@ -1,0 +1,7 @@
+$dispatcher->listen(
+
+    SessionEvents::ENDED,
+
+    [new SurveyListener(),'handle']
+
+);

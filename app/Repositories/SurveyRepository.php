@@ -1,154 +1,102 @@
 <?php
 
-namespace GuestConnect\Services;
+namespace GuestConnect\Repositories;
 
-use GuestConnect\Repositories\SurveyRepository;
+use GuestConnect\Core\Database;
 
-class SurveyService
+class SurveyRepository
 {
-    private SurveyRepository $repository;
-    private SettingsService $settings;
-
-    public function __construct()
+    public function getByGuestId(int $guestId): ?array
     {
-        $this->repository = new SurveyRepository();
-        $this->settings = new SettingsService();
-    }
-
-    /**
-     * Ensure survey record exists.
-     */
-    public function ensureGuest(int $guestId): void
-    {
-        if (!$this->repository->getByGuestId($guestId)) {
-            $this->repository->create($guestId);
-        }
-    }
-
-    /**
-     * Add connected time.
-     */
-    public function recordSession(int $guestId, int $seconds): void
-    {
-        $this->ensureGuest($guestId);
-
-        if ($seconds <= 0) {
-            return;
-        }
-
-        $this->repository->addConnectedSeconds(
-            $guestId,
-            $seconds
-        );
-    }
-
-    /**
-     * Total accumulated connection time.
-     */
-    public function getConnectedTime(int $guestId): int
-    {
-        $this->ensureGuest($guestId);
-
-        return $this->repository->getConnectedSeconds($guestId);
-    }
-
-    /**
-     * Has survey been shown?
-     */
-    public function hasSurveyBeenShown(int $guestId): bool
-    {
-        $survey = $this->repository->getByGuestId($guestId);
-
-        return !empty($survey['survey_shown']);
-    }
-
-    /**
-     * Has survey been completed?
-     */
-    public function hasSurveyBeenCompleted(int $guestId): bool
-    {
-        $survey = $this->repository->getByGuestId($guestId);
-
-        return !empty($survey['survey_completed']);
-    }
-
-    /**
-     * Decide if the survey should be shown.
-     */
-    public function shouldShowSurvey(int $guestId): bool
-    {
-        $this->ensureGuest($guestId);
-
-        $survey = $this->repository->getByGuestId($guestId);
-
-        if (!$survey) {
-            return false;
-        }
-
-        // Already completed
-        if (!empty($survey['survey_completed'])) {
-            return false;
-        }
-
-        $showOnce = (int)$this->settings->get(
-            'survey_show_once',
-            1
+        $stmt = Database::connection()->prepare(
+            "SELECT *
+             FROM guest_surveys
+             WHERE guest_id = ?"
         );
 
-        if (
-            $showOnce &&
-            !empty($survey['survey_shown'])
-        ) {
-            return false;
-        }
+        $stmt->execute([$guestId]);
 
-        $delay = (int)$this->settings->get(
-            'survey_delay',
-            6
-        );
+        return $stmt->fetch() ?: null;
+    }
 
-        $unit = strtolower(
-            $this->settings->get(
-                'survey_unit',
-                'hours'
+    public function create(int $guestId): void
+    {
+        $stmt = Database::connection()->prepare(
+            "INSERT INTO guest_surveys
+            (
+                guest_id,
+                connected_seconds
             )
+            VALUES
+            (
+                ?,0
+            )"
         );
 
-        switch ($unit) {
-
-            case 'minutes':
-                $threshold = $delay * 60;
-                break;
-
-            case 'days':
-                $threshold = $delay * 86400;
-                break;
-
-            default:
-                $threshold = $delay * 3600;
-                break;
-        }
-
-        return (
-            (int)$survey['connected_seconds']
-            >=
-            $threshold
-        );
+        $stmt->execute([$guestId]);
     }
 
-    /**
-     * Mark survey as shown.
-     */
+    public function getConnectedSeconds(int $guestId): int
+    {
+        $survey = $this->getByGuestId($guestId);
+
+        return $survey
+            ? (int)$survey['connected_seconds']
+            : 0;
+    }
+
+    public function addConnectedSeconds(int $guestId, int $seconds): void
+    {
+        $stmt = Database::connection()->prepare(
+            "UPDATE guest_surveys
+             SET connected_seconds = connected_seconds + ?
+             WHERE guest_id = ?"
+        );
+
+        $stmt->execute([
+            $seconds,
+            $guestId
+        ]);
+    }
+
     public function markShown(int $guestId): void
     {
-        $this->repository->markShown($guestId);
+        $stmt = Database::connection()->prepare(
+            "UPDATE guest_surveys
+             SET
+                survey_shown = 1,
+                survey_last_shown = NOW()
+             WHERE guest_id = ?"
+        );
+
+        $stmt->execute([$guestId]);
     }
 
-    /**
-     * Mark survey as completed.
-     */
     public function markCompleted(int $guestId): void
     {
-        $this->repository->markCompleted($guestId);
+        $stmt = Database::connection()->prepare(
+            "UPDATE guest_surveys
+             SET
+                survey_completed = 1,
+                survey_completed_at = NOW()
+             WHERE guest_id = ?"
+        );
+
+        $stmt->execute([$guestId]);
+    }
+
+    public function findByGuest(int $guestId): ?array
+    {
+        return $this->getByGuestId($guestId);
+    }
+
+    public function getConnectedTime(int $guestId): int
+    {
+        return $this->getConnectedSeconds($guestId);
+    }
+
+    public function recordSession(int $guestId, int $seconds): void
+    {
+        $this->addConnectedSeconds($guestId, $seconds);
     }
 }

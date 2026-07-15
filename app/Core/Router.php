@@ -22,22 +22,41 @@ class Router
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         if (!isset($this->routes[$method][$uri])) {
+
             http_response_code(404);
+
             echo "<h1>404 - Page Not Found</h1>";
+
             return;
         }
 
         $action = $this->routes[$method][$uri];
 
         if (is_callable($action)) {
+
             call_user_func($action);
+
             return;
         }
 
         [$controller, $method] = $action;
 
-        $controller = new $controller();
+        try {
 
-        $controller->$method();
+            $instance = new $controller();
+
+            $instance->$method();
+
+        } catch (\Throwable $e) {
+
+            echo "<pre>";
+            echo "MESSAGE:\n" . $e->getMessage();
+            echo "\n\nFILE:\n" . $e->getFile();
+            echo "\n\nLINE:\n" . $e->getLine();
+            echo "\n\nTRACE:\n";
+            print_r($e->getTrace());
+
+            exit;
+        }
     }
 }
