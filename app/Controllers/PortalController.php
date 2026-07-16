@@ -34,6 +34,12 @@ class PortalController extends Controller
 
         $showSurvey = false;
 
+        $surveyProvider = null;
+
+        $surveyIdentifier = null;
+
+        $surveyUrl = null;
+
         if (!empty($mac)) {
 
             $result = $guestService->register($mac);
@@ -41,7 +47,25 @@ class PortalController extends Controller
             $guest = $result['guest'];
 
             $showSurvey = $result['showSurvey'];
-        }
+
+            if ($showSurvey) {
+
+                $surveyProvider = $settings->get(
+                    'survey_provider'
+                );
+
+                $surveyIdentifier = $settings->get(
+                    'survey_identifier'
+                );
+
+                $surveyUrl = rtrim(
+                    $settings->get('survey_url'),
+                    '/'
+                ) . '/' . $surveyIdentifier;
+
+            } // closes if ($showSurvey)
+
+        } // closes if (!empty($mac))
 
         $auth = $authService->getMethod();
 
@@ -59,6 +83,12 @@ class PortalController extends Controller
             'token' => $token,
 
             'showSurvey' => $showSurvey,
+
+            'surveyProvider' => $surveyProvider,
+
+            'surveyIdentifier' => $surveyIdentifier,
+
+            'surveyUrl' => $surveyUrl,
 
             'auth' => $auth,
 

@@ -59,7 +59,11 @@ class SurveyRepository
         ]);
     }
 
-    public function markShown(int $guestId): void
+    public function markShown(
+        int $guestId,
+        string $provider,
+        string $identifier
+    ): void
     {
         $stmt = Database::connection()->prepare(
             "UPDATE guest_surveys
@@ -69,7 +73,11 @@ class SurveyRepository
              WHERE guest_id = ?"
         );
 
-        $stmt->execute([$guestId]);
+        $stmt->execute([
+            $provider,
+            $identifier,
+            $guestId
+        ]);
     }
 
     public function markCompleted(int $guestId): void

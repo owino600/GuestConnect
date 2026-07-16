@@ -70,7 +70,21 @@ class SurveyService
 
     public function markShown(int $guestId): void
     {
-        $this->repository->markShown($guestId);
+        $provider = $this->settings->get(
+            'survey_provider',
+            'formbricks'
+        );
+
+        $identifier = $this->settings->get(
+            'survey_identifier',
+            'guest-feedback'
+        );
+
+        $this->repository->markShown(
+            $guestId,
+            $provider,
+            $identifier
+        );
     }
 
     public function markCompleted(int $guestId): void
