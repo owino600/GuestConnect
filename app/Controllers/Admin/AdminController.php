@@ -246,4 +246,36 @@ class AdminController extends Controller
             'clients' => $clients
         ]);
     }
+
+    public function surveys(): void
+    {
+        $settings = new SettingsService();
+
+        $this->adminView('surveys', [
+            'settings' => $settings->all()
+        ]);
+    }
+
+    public function saveSurveys(): void
+    {
+        $settings = new SettingsService();
+
+        $settings->set('survey_provider', $_POST['survey_provider'] ?? 'formbricks');
+
+        $settings->set('survey_identifier', $_POST['survey_identifier'] ?? '');
+
+        $settings->set('survey_url', $_POST['survey_url'] ?? '');
+
+        $settings->set('survey_environment_id', $_POST['survey_environment_id'] ?? '');
+
+        $settings->set('survey_delay', $_POST['survey_delay'] ?? 6);
+
+        $settings->set('survey_unit', $_POST['survey_unit'] ?? 'hours');
+
+        $settings->set('survey_show_once', isset($_POST['survey_show_once']) ? 1 : 0);
+
+        header("Location: /admin/surveys");
+
+        exit;
+    }
 }

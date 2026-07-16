@@ -29,7 +29,7 @@ use GuestConnect\Core\Session;
 
         <li><a href="/admin/terms">📄 Terms</a></li>
 
-        <li><a href="/admin/survey">📊 Survey</a></li>
+        <li><a href="/admin/surveys">📊 Survey</a></li>
 
         <li><a href="/admin/system">⚙ System</a></li>
 

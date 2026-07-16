@@ -6,6 +6,7 @@ use GuestConnect\Core\Controller;
 use GuestConnect\Services\GuestService;
 use GuestConnect\Services\AuthMethodService;
 use GuestConnect\Services\SettingsService;
+use GuestConnect\Services\Survey\SurveyLauncher;
 
 class PortalController extends Controller
 {
@@ -32,40 +33,31 @@ class PortalController extends Controller
 
         $guest = null;
 
-        $showSurvey = false;
+        $survey = [
 
-        $surveyProvider = null;
+            'show' => false,
 
-        $surveyIdentifier = null;
+            'provider' => null,
 
-        $surveyUrl = null;
+            'identifier' => null,
 
-        if (!empty($mac)) {
+            'url' => null
 
-            $result = $guestService->register($mac);
+       ];
 
-            $guest = $result['guest'];
+       if (!empty($mac)) {
 
-            $showSurvey = $result['showSurvey'];
+           $result = $guestService->register($mac);
 
-            if ($showSurvey) {
+           $guest = $result['guest'];
+           if ($guest) {
 
-                $surveyProvider = $settings->get(
-                    'survey_provider'
-                );
+               $launcher = new SurveyLauncher();
 
-                $surveyIdentifier = $settings->get(
-                    'survey_identifier'
-                );
+               $survey = $launcher->launch($guest);
+            }
 
-                $surveyUrl = rtrim(
-                    $settings->get('survey_url'),
-                    '/'
-                ) . '/' . $surveyIdentifier;
-
-            } // closes if ($showSurvey)
-
-        } // closes if (!empty($mac))
+        }
 
         $auth = $authService->getMethod();
 
@@ -82,13 +74,7 @@ class PortalController extends Controller
             'url' => $url,
             'token' => $token,
 
-            'showSurvey' => $showSurvey,
-
-            'surveyProvider' => $surveyProvider,
-
-            'surveyIdentifier' => $surveyIdentifier,
-
-            'surveyUrl' => $surveyUrl,
+            'survey' => $survey,
 
             'auth' => $auth,
 

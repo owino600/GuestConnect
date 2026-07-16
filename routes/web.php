@@ -5,6 +5,7 @@ use GuestConnect\Controllers\TestController;
 use GuestConnect\Controllers\UniFiController;
 use GuestConnect\Controllers\AuthController;
 use GuestConnect\Controllers\Admin\AdminController;
+use GuestConnect\Controllers\SurveyController;
 
 $router->get('/', [PortalController::class, 'login']);
 
@@ -14,6 +15,7 @@ $router->get('/guest/s/default', [PortalController::class, 'login']);
 $router->get('/guest/s/default/', [PortalController::class, 'login']);
 
 $router->post('/authorize', [AuthController::class, 'authorize']);
+$router->post('/survey/completed', [SurveyController::class, 'completed']);
 
 $router->get('/test/guest', [TestController::class, 'guest']);
 
@@ -27,3 +29,5 @@ $router->post('/admin/branding', [AdminController::class, 'saveBranding']);
 $router->get('/admin/authentication', [AdminController::class, 'authentication']);
 $router->post('/admin/authentication', [AdminController::class, 'saveAuthentication']);
 $router->get('/admin/activity', [AdminController::class, 'activity']);
+$router->get('/admin/surveys', [AdminController::class, 'surveys']);
+$router->post('/admin/surveys', [AdminController::class, 'saveSurveys']);

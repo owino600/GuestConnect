@@ -8,43 +8,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-
-    <?= htmlspecialchars($settings['portal_name']) ?>
-
-    Guest Wi-Fi
-
+        <?= htmlspecialchars($settings['portal_name']) ?>
+        Guest Wi-Fi
     </title>
 
     <link rel="stylesheet" href="/css/portal.css">
-    <?php
-
-    $background = !empty($settings['background_image'])
-
-    ? "/images/uploads/".$settings['background_image']
-
-    : null;
-
-    ?>
 
     <style>
+
     :root{
 
         --primary-color: <?= htmlspecialchars($settings['primary_color'] ?? '#2563eb') ?>;
-
         --secondary-color: <?= htmlspecialchars($settings['secondary_color'] ?? '#ffffff') ?>;
 
     }
+
     .background{
 
     <?php if(!empty($settings['background_image'])): ?>
 
         background:
-            linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+            linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
             url("/images/uploads/<?= htmlspecialchars($settings['background_image']) ?>");
 
-        background-size:cover;
-
-        background-position:center;
+        background-size: cover;
+        background-position: center;
 
     <?php else: ?>
 
@@ -71,23 +59,18 @@
         </div>
 
         <h1>
-
-        <?= htmlspecialchars($settings['portal_name']) ?>
-
+            <?= htmlspecialchars($settings['portal_name']) ?>
         </h1>
+
         <h2>
-
-        <?= htmlspecialchars($settings['welcome_heading']) ?>
-
+            <?= htmlspecialchars($settings['welcome_heading']) ?>
         </h2>
 
         <p class="subtitle">
-
             <?= htmlspecialchars($settings['welcome_message']) ?>
-
         </p>
 
-        <?php if($showSurvey): ?>
+        <?php if ($survey['show']): ?>
 
             <div class="survey">
 
@@ -102,9 +85,7 @@
             <div class="form-group">
 
                 <label>
-
                     <?= htmlspecialchars($auth['label']) ?>
-
                 </label>
 
                 <input
@@ -114,37 +95,40 @@
                     required>
 
             </div>
-            <?php if (!empty($_SESSION['error'])) : ?>
 
-            <div class="error-message">
-                <?= htmlspecialchars($_SESSION['error']) ?>
-            </div>
+            <?php if (!empty($_SESSION['error'])): ?>
 
-            <?php unset($_SESSION['error']); ?>
+                <div class="error-message">
+                    <?= htmlspecialchars($_SESSION['error']) ?>
+                </div>
+
+                <?php unset($_SESSION['error']); ?>
 
             <?php endif; ?>
 
             <div class="terms">
 
-               <label class ="terms-label">
+                <label class="terms-label">
 
-                   <input
+                    <input
                         type="checkbox"
                         id="terms"
                         name="terms"
                         required>
-                   <span>
 
-                      I have read and agree to the
+                    <span>
 
-                      <a href="#" id="viewTerms">
+                        I have read and agree to the
 
-                         Terms & Conditions
+                        <a href="#" id="viewTerms">
 
-                      </a>
-                   </span>
+                            Terms & Conditions
 
-               </label>
+                        </a>
+
+                    </span>
+
+                </label>
 
             </div>
 
@@ -209,6 +193,46 @@
     </div>
 
 </div>
+
+<script type="module">
+
+import {
+    init,
+    surveys
+} from "<?= htmlspecialchars($settings['survey_url']) ?>/js/formbricks.umd.cjs";
+
+window.FormbricksSDK = {
+    init,
+    surveys
+};
+
+</script>
+
+<script src="/js/survey.js"></script>
+
+<?php if ($survey['show']): ?>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const survey = new GuestSurvey({
+
+        show: <?= json_encode($survey['show']) ?>,
+
+        provider: <?= json_encode($survey['provider']) ?>,
+
+        configuration: <?= json_encode($survey['configuration']) ?>
+
+    });
+
+    survey.launch();
+
+});
+
+</script>
+
+<?php endif; ?>
 
 <script src="/js/portal.js"></script>
 
