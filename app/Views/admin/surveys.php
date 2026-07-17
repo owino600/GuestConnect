@@ -87,7 +87,7 @@
 
     <div class="form-group">
 
-        <label>
+        <label class="checkbox-label">
 
             <input
                 type="checkbox"
@@ -100,7 +100,7 @@
 
     </div>
 
-    <button type="submit">
+    <button type="submit" class="btn-primary">
 
         Save Survey Settings
 

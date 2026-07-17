@@ -84,9 +84,9 @@
 
 }
 
-.form-group input[type=text]:focus,
-
-.form-group textarea:focus{
+.form-group input,
+.form-group select,
+.form-group textarea{
 
     outline:none;
 
@@ -157,5 +157,38 @@ input[type=color]{
     background:#1d4ed8;
 
     transform:translateY(-2px);
+
+}
+/* ------------------------------------------
+   Checkbox Labels
+------------------------------------------ */
+
+.checkbox-label{
+
+    display:flex !important;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    margin-bottom:0;
+
+}
+
+.checkbox-label input[type=checkbox]{
+
+    width:auto;
+
+    margin:0;
+
+    flex-shrink:0;
+
+}
+
+.checkbox-label span{
+
+    font-weight:500;
 
 }

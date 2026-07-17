@@ -194,27 +194,17 @@
 
 </div>
 
-<script type="module">
+<!-- Survey Provider -->
+<script src="/js/providers/formbricks.js"></script>
 
-import {
-    init,
-    surveys
-} from "<?= htmlspecialchars($settings['survey_url']) ?>/js/formbricks.umd.cjs";
-
-window.FormbricksSDK = {
-    init,
-    surveys
-};
-
-</script>
-
+<!-- Survey Manager -->
 <script src="/js/survey.js"></script>
 
 <?php if ($survey['show']): ?>
 
 <script>
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     const survey = new GuestSurvey({
 
@@ -226,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    survey.launch();
+    await survey.launch();
 
 });
 
@@ -234,6 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <?php endif; ?>
 
+<!-- Portal Logic -->
 <script src="/js/portal.js"></script>
 
 </body>

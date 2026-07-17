@@ -2,25 +2,23 @@ class GuestSurvey {
 
     constructor(config) {
 
-        this.show = config.show;
-        this.provider = config.provider;
-        this.configuration = config.configuration;
+        this.config = config;
 
     }
 
-    launch() {
+    async launch() {
 
-        if (!this.show) {
-
+        if (!this.config.show) {
             return;
-
         }
 
-        switch (this.provider) {
+        switch (this.config.provider) {
 
             case "formbricks":
 
-                this.launchFormbricks();
+                await new FormbricksProvider(
+                    this.config.configuration
+                ).launch();
 
                 break;
 
@@ -28,20 +26,13 @@ class GuestSurvey {
 
                 console.warn(
                     "Unknown survey provider:",
-                    this.provider
+                    this.config.provider
                 );
 
         }
 
     }
 
-    launchFormbricks() {
-
-        window.open(
-            this.url,
-            "_blank"
-        );
-
-    }
-
 }
+
+window.GuestSurvey = GuestSurvey;
