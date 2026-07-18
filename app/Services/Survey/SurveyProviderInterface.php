@@ -5,22 +5,14 @@ namespace GuestConnect\Services\Survey;
 interface SurveyProviderInterface
 {
     /**
-     * Provider name.
+     * Provider name
      */
     public function getName(): string;
 
     /**
-     * Build the survey launch URL.
+     * Build the configuration required by the frontend
      */
-    public function getLaunchUrl(
-        string $identifier,
-        array $guest = []
-    ): string;
-
-    /**
-     * Notify provider that survey was completed.
-     */
-    public function markCompleted(
-        array $payload
-    ): bool;
+    public function getLaunchConfiguration(
+        array $guest
+    ): array;
 }

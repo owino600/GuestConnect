@@ -1,0 +1,79 @@
+.survey-page{
+
+    max-width:950px;
+
+    margin:auto;
+
+}
+
+.survey-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:35px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    margin-bottom:30px;
+
+}
+
+.survey-card h2{
+
+    margin-top:0;
+
+    margin-bottom:10px;
+
+    font-size:24px;
+
+}
+
+.survey-description{
+
+    color:#6b7280;
+
+    margin-bottom:30px;
+
+}
+
+.provider-description{
+
+    background:#f8fafc;
+
+    border-left:4px solid #2563eb;
+
+    padding:18px;
+
+    border-radius:10px;
+
+    margin-top:15px;
+
+    color:#374151;
+
+    font-size:14px;
+
+}
+
+.section-title{
+
+    margin-top:35px;
+
+    margin-bottom:15px;
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+.save-bar{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-top:35px;
+
+}

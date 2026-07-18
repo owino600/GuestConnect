@@ -2,21 +2,33 @@
 
 namespace GuestConnect\Services\Survey;
 
+use GuestConnect\Services\SettingsService;
 use GuestConnect\Services\Survey\Providers\FormbricksProvider;
 
 class SurveyProviderFactory
 {
-    public static function create()
+    public static function create(): SurveyProviderInterface
     {
-        $provider = (new \GuestConnect\Services\SettingsService())
-            ->get('survey_provider');
+        SurveyProviderRegistry::register(
+            "formbricks",
+            FormbricksProvider::class
+        );
 
-        return match ($provider) {
+        $settings = new SettingsService();
 
-            'formbricks' => new FormbricksProvider(),
+        $provider = strtolower(
+            $settings->get("survey_provider") ?? "formbricks"
+        );
 
-            default => new FormbricksProvider()
+        $class = SurveyProviderRegistry::get($provider);
 
-        };
+        if (!$class) {
+
+            $class = FormbricksProvider::class;
+
+        }
+
+        return new $class();
+
     }
 }

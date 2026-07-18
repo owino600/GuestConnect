@@ -194,12 +194,16 @@
 
 </div>
 
-<!-- Survey Provider -->
-<script src="/js/providers/formbricks.js"></script>
+<!-- Survey Providers -->
+<script src="/js/providers/FormbricksProvider.js"></script>
 
-<!-- Survey Manager -->
+<!-- Provider Factory -->
+<script src="/js/providers/ProviderFactory.js"></script>
+
+<!-- Survey Engine -->
 <script src="/js/survey.js"></script>
 
+<!-- Launch Survey -->
 <?php if ($survey['show']): ?>
 
 <script>

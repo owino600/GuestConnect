@@ -2,35 +2,48 @@
 
 namespace GuestConnect\Services\Survey\Providers;
 
-class FormbricksProvider
+use GuestConnect\Services\Survey\SurveyProviderInterface;
+use GuestConnect\Services\SettingsService;
+
+class FormbricksProvider implements SurveyProviderInterface
 {
+    private SettingsService $settings;
+
+    public function __construct()
+    {
+        $this->settings = new SettingsService();
+    }
+
     public function getName(): string
     {
-        return 'formbricks';
+        return "formbricks";
     }
 
     public function getLaunchConfiguration(
-        string $environmentId,
-        string $surveyIdentifier,
         array $guest
     ): array {
 
         return [
 
-            'environmentId' => $environmentId,
+            "provider" => "formbricks",
 
-            'surveyIdentifier' => $surveyIdentifier,
+            "type" => "popup",
 
-            'guest' => [
+            "url" => trim(
+                $this->settings->get("survey_url")
+            ),
 
-                'id' => $guest['id'],
+            "guest" => [
 
-                'mac' => $guest['mac_address'],
+                "id" => $guest["id"],
 
-                'visits' => $guest['visits']
+                "mac" => $guest["mac_address"],
+
+                "visits" => $guest["visits"]
 
             ]
 
         ];
+
     }
 }

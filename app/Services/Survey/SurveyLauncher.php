@@ -34,15 +34,8 @@ class SurveyLauncher
 
         $provider = SurveyProviderFactory::create();
 
-        $identifier = $this->settings->get(
-            'survey_identifier'
-        );
 
         $config = $provider->getLaunchConfiguration(
-
-            $this->settings->get('survey_environment_id'),
-
-            $identifier,
 
             $guest
 

@@ -57,7 +57,7 @@ class FormbricksProvider {
 
     openModal() {
 
-        console.log("Modal launcher coming soon.");
+        console.log("Modal support coming later.");
 
     }
 
