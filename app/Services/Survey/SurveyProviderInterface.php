@@ -12,6 +12,7 @@ interface SurveyProviderInterface
     /**
      * Build the configuration required by the frontend
      */
+    public function getSupportedDisplayMethods(): array;
     public function getLaunchConfiguration(
         array $guest
     ): array;

@@ -192,3 +192,24 @@ input[type=color]{
     font-weight:500;
 
 }
+.radio-option{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:12px 0;
+
+    font-weight:500;
+
+}
+
+.radio-option input{
+
+    width:18px;
+
+    height:18px;
+
+}

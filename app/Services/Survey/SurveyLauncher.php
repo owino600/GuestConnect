@@ -50,6 +50,9 @@ class SurveyLauncher
             'show' => true,
 
             'provider' => $provider->getName(),
+            'supportedDisplayMethods' =>
+
+                $provider->getSupportedDisplayMethods(),
 
             'configuration' => $config
 

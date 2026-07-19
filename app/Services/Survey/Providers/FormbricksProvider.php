@@ -19,6 +19,19 @@ class FormbricksProvider implements SurveyProviderInterface
         return "formbricks";
     }
 
+    public function getSupportedDisplayMethods(): array
+    {
+        return [
+
+            "popup",
+
+            "redirect",
+
+            "modal"
+
+        ];
+    }
+
     public function getLaunchConfiguration(
         array $guest
     ): array {

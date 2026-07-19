@@ -38,6 +38,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
     };
 
+    const displayMethods = {
+
+        formbricks: [
+
+            "popup",
+
+            "redirect",
+
+            "modal"
+
+        ],
+
+        google: [
+
+            "popup",
+
+            "redirect"
+
+        ],
+
+        microsoft: [
+
+            "redirect"
+
+        ],
+
+        typeform: [
+
+            "popup",
+
+            "redirect",
+
+            "embed"
+
+        ],
+
+        survicate: [
+
+            "popup",
+
+            "redirect"
+
+        ],
+
+        custom: [
+
+            "popup",
+
+            "redirect",
+
+            "modal"
+
+        ]
+
+    };
+
     const sections = {
 
         formbricks: document.getElementById("formbricksSettings"),
@@ -83,11 +139,52 @@ document.addEventListener("DOMContentLoaded", () => {
             "</strong><br>" +
 
             info.text;
+       renderDisplayMethods(provider.value);
 
     }
 
     provider.addEventListener("change", updateUI);
 
     updateUI();
+
+    function renderDisplayMethods(providerName) {
+
+        const container = document.getElementById(
+
+            "displayMethodContainer"
+
+        );
+
+        container.innerHTML = "";
+
+        displayMethods[providerName].forEach(method => {
+
+            const label = document.createElement("label");
+
+            label.className = "radio-option";
+
+            label.innerHTML = `
+
+                <input
+
+                    type="radio"
+
+                    name="survey_display_method"
+
+                    value="${method}"
+
+                    ${method === "popup" ? "checked" : ""}
+
+                >
+
+                ${method.charAt(0).toUpperCase() + method.slice(1)}
+
+            `;
+
+            container.appendChild(label);
+
+        });
+
+    }
 
 });

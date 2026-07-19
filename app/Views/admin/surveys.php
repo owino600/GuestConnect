@@ -44,6 +44,18 @@
 
     </div>
 
+    <div class="form-group">
+
+        <label>Display Method</label>
+
+        <div id="displayMethodContainer">
+
+            <!-- Generated automatically -->
+
+        </div>
+
+    </div>
+
     <div id="formbricksSettings">
 
         <div class="form-group">
