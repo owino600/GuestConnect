@@ -196,6 +196,15 @@
 
 <!-- Survey Providers -->
 <script src="/js/providers/FormbricksProvider.js"></script>
+<script src="/js/providers/GoogleFormsProvider.js"></script>
+
+<script src="/js/providers/MicrosoftFormsProvider.js"></script>
+
+<script src="/js/providers/TypeformProvider.js"></script>
+
+<script src="/js/providers/SurvicateProvider.js"></script>
+
+<script src="/js/providers/CustomProvider.js"></script>
 
 <!-- Provider Factory -->
 <script src="/js/providers/ProviderFactory.js"></script>

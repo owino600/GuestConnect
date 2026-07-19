@@ -25,40 +25,82 @@ class SettingsService
 
     public function all(): array
     {
-         return [
+        return [
 
-             'portal_name' => $this->get('portal_name'),
+            /*
+            |--------------------------------------------------------------------------
+            | Portal
+            |--------------------------------------------------------------------------
+            */
 
-             'welcome_heading' => $this->get('welcome_heading'),
+            'portal_name' => $this->get('portal_name'),
 
-             'welcome_message' => $this->get('welcome_message'),
+            'welcome_heading' => $this->get('welcome_heading'),
 
-             'terms_conditions'   => $this->get('terms_conditions'),
+            'welcome_message' => $this->get('welcome_message'),
 
-             'authentication_type' => $this->get('authentication_type'),
+            'terms_conditions' => $this->get('terms_conditions'),
 
-             'wifi_password' => $this->get('wifi_password'),
+            /*
+            |--------------------------------------------------------------------------
+            | Authentication
+            |--------------------------------------------------------------------------
+            */
 
-             'survey_enabled' => $this->get('survey_enabled'),
+            'authentication_type' => $this->get('authentication_type'),
 
-             'survey_delay_hours' => $this->get('survey_delay_hours'),
+            'wifi_password' => $this->get('wifi_password'),
 
-             'survey_reset_days' => $this->get('survey_reset_days'),
+            /*
+            |--------------------------------------------------------------------------
+            | Survey
+            |--------------------------------------------------------------------------
+            */
 
-             'formbricks_url' => $this->get('formbricks_url'),
+            'survey_provider' => $this->get('survey_provider', 'formbricks'),
 
-             'logo' => $this->get('logo'),
+            'survey_display_method' => $this->get('survey_display_method', 'popup'),
 
-             'background_image' => $this->get('background_image'),
+            'survey_url' => $this->get('survey_url'),
 
-             'background_color' => $this->get('background_color'),
+            'survey_environment_id' => $this->get('survey_environment_id'),
 
-             'primary_color' => $this->get('primary_color'),
+            'survey_identifier' => $this->get('survey_identifier'),
 
-             'secondary_color' => $this->get('secondary_color'),
+            'google_form_url' => $this->get('google_form_url'),
 
-             'theme' => $this->get('theme')
+            'microsoft_form_url' => $this->get('microsoft_form_url'),
 
-         ];
-   }
+            'typeform_url' => $this->get('typeform_url'),
+
+            'survicate_url' => $this->get('survicate_url'),
+
+            'custom_survey_url' => $this->get('custom_survey_url'),
+
+            'survey_delay' => $this->get('survey_delay', 6),
+
+            'survey_unit' => $this->get('survey_unit', 'hours'),
+
+            'survey_show_once' => $this->get('survey_show_once', 0),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Branding
+            |--------------------------------------------------------------------------
+            */
+
+            'logo' => $this->get('logo'),
+
+            'background_image' => $this->get('background_image'),
+
+            'background_color' => $this->get('background_color'),
+
+            'primary_color' => $this->get('primary_color'),
+
+            'secondary_color' => $this->get('secondary_color'),
+
+            'theme' => $this->get('theme')
+
+        ];
+    }
 }

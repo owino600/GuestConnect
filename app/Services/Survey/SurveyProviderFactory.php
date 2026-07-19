@@ -4,6 +4,11 @@ namespace GuestConnect\Services\Survey;
 
 use GuestConnect\Services\SettingsService;
 use GuestConnect\Services\Survey\Providers\FormbricksProvider;
+use GuestConnect\Services\Survey\Providers\GoogleFormsProvider;
+use GuestConnect\Services\Survey\Providers\MicrosoftFormsProvider;
+use GuestConnect\Services\Survey\Providers\TypeformProvider;
+use GuestConnect\Services\Survey\Providers\SurvicateProvider;
+use GuestConnect\Services\Survey\Providers\CustomProvider;
 
 class SurveyProviderFactory
 {
@@ -12,6 +17,16 @@ class SurveyProviderFactory
         SurveyProviderRegistry::register(
             "formbricks",
             FormbricksProvider::class
+        );
+
+        SurveyProviderRegistry::register(
+            "google",
+            GoogleFormsProvider::class
+        );
+
+        SurveyProviderRegistry::register(
+            "microsoft",
+            MicrosoftFormsProvider::class
         );
 
         $settings = new SettingsService();

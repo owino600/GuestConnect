@@ -260,19 +260,135 @@ class AdminController extends Controller
     {
         $settings = new SettingsService();
 
-        $settings->set('survey_provider', $_POST['survey_provider'] ?? 'formbricks');
+        /*
+        |--------------------------------------------------------------------------
+        | Provider
+        |--------------------------------------------------------------------------
+        */
 
-        $settings->set('survey_identifier', $_POST['survey_identifier'] ?? '');
+        $settings->set(
+            'survey_provider',
+            $_POST['survey_provider'] ?? 'formbricks'
+        );
 
-        $settings->set('survey_url', $_POST['survey_url'] ?? '');
+        /*
+        |--------------------------------------------------------------------------
+        | Display Method
+        |--------------------------------------------------------------------------
+        */
 
-        $settings->set('survey_environment_id', $_POST['survey_environment_id'] ?? '');
+        $settings->set(
+            'survey_display_method',
+            $_POST['survey_display_method'] ?? 'popup'
+        );
 
-        $settings->set('survey_delay', $_POST['survey_delay'] ?? 6);
+        /*
+        |--------------------------------------------------------------------------
+        | Formbricks
+        |--------------------------------------------------------------------------
+        */
 
-        $settings->set('survey_unit', $_POST['survey_unit'] ?? 'hours');
+        $settings->set(
+            'survey_url',
+            trim($_POST['survey_url'] ?? '')
+        );
 
-        $settings->set('survey_show_once', isset($_POST['survey_show_once']) ? 1 : 0);
+        $settings->set(
+            'survey_environment_id',
+            trim($_POST['survey_environment_id'] ?? '')
+        );
+
+        $settings->set(
+            'survey_identifier',
+            trim($_POST['survey_identifier'] ?? '')
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Google Forms
+        |--------------------------------------------------------------------------
+        */
+
+        $settings->set(
+            'google_form_url',
+            trim($_POST['google_form_url'] ?? '')
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Microsoft Forms
+        |--------------------------------------------------------------------------
+        */
+
+        $settings->set(
+            'microsoft_form_url',
+            trim($_POST['microsoft_form_url'] ?? '')
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Typeform
+        |--------------------------------------------------------------------------
+        */
+
+        $settings->set(
+            'typeform_url',
+            trim($_POST['typeform_url'] ?? '')
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Survicate
+        |--------------------------------------------------------------------------
+        */
+
+        $settings->set(
+            'survicate_url',
+            trim($_POST['survicate_url'] ?? '')
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Custom Survey
+        |--------------------------------------------------------------------------
+        */
+
+        $settings->set(
+            'custom_survey_url',
+            trim($_POST['custom_survey_url'] ?? '')
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Timing
+        |--------------------------------------------------------------------------
+        */
+
+        $settings->set(
+            'survey_delay',
+            (int)($_POST['survey_delay'] ?? 6)
+        );
+
+        $settings->set(
+            'survey_unit',
+            $_POST['survey_unit'] ?? 'hours'
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Behaviour
+        |--------------------------------------------------------------------------
+        */
+
+        $settings->set(
+            'survey_show_once',
+            isset($_POST['survey_show_once']) ? 1 : 0
+        );
+
+        Session::flash(
+            'success',
+            'Survey settings saved successfully.'
+        );
 
         header("Location: /admin/surveys");
 

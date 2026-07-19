@@ -1,4 +1,4 @@
-class FormbricksProvider {
+class GoogleFormsProvider {
 
     constructor(config) {
 
@@ -10,7 +10,7 @@ class FormbricksProvider {
 
         if (!this.config.url) {
 
-            console.warn("No Formbricks survey URL configured.");
+            console.warn("No Google Form URL configured.");
 
             return;
 
@@ -26,11 +26,6 @@ class FormbricksProvider {
             case "redirect":
 
                 window.location.href = this.config.url;
-                break;
-
-            case "modal":
-
-                this.openModal();
                 break;
 
             default:
@@ -55,12 +50,6 @@ class FormbricksProvider {
 
     }
 
-    openModal() {
-
-        console.log("Modal launcher coming soon.");
-
-    }
-
 }
 
-window.FormbricksProvider = FormbricksProvider;
+window.GoogleFormsProvider = GoogleFormsProvider;
