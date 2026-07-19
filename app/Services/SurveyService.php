@@ -3,6 +3,7 @@
 namespace GuestConnect\Services;
 
 use GuestConnect\Repositories\SurveyRepository;
+use GuestConnect\Repositories\GuestSessionRepository;
 
 class SurveyService
 {
@@ -32,7 +33,28 @@ class SurveyService
     {
         $this->ensureGuest($guestId);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Ignore duplicate uptime
+        |--------------------------------------------------------------------------
+        */
+
+        $survey = $this->repository->getByGuestId($guestId);
+
+        $lastRecorded = (int)($survey['last_recorded_uptime'] ?? 0);
+
+        if ($seconds <= $lastRecorded) {
+            return;
+        }
+
+        $increment = $seconds - $lastRecorded;
+
         $this->repository->addConnectedSeconds(
+            $guestId,
+            $increment
+        );
+
+        $this->repository->updateRecordedUptime(
             $guestId,
             $seconds
         );
@@ -70,12 +92,14 @@ class SurveyService
 
     public function markShown(int $guestId): void
     {
-        $provider = $this->settings->get(
+        $settings = new SettingsService();
+
+        $provider = $settings->get(
             'survey_provider',
             'formbricks'
         );
 
-        $identifier = $this->settings->get(
+        $identifier = $settings->get(
             'survey_identifier',
             'guest-feedback'
         );
@@ -100,37 +124,114 @@ class SurveyService
             return false;
         }
 
+        // Already completed
         if ($survey['survey_completed']) {
             return false;
         }
 
         $settings = new SettingsService();
 
-        $showOnce = (int)$settings->get('survey_show_once', 1);
+        $showOnce = (int)$settings->get(
+            'survey_show_once',
+            1
+        );
 
         if ($showOnce && $survey['survey_shown']) {
             return false;
         }
 
-        $delay = (int)$settings->get('survey_delay', 6);
+        /*
+        |--------------------------------------------------------------------------
+        | Build Total Connected Time
+        |--------------------------------------------------------------------------
+        */
 
-        $unit = $settings->get('survey_unit', 'hours');
+        $connectedSeconds = (int)$survey['connected_seconds'];
+
+        $sessions = new GuestSessionRepository();
+
+        $activeSession = $sessions->getActiveSession($guestId);
+
+        if ($activeSession) {
+
+            $connectedSeconds += (
+                time() -
+                strtotime($activeSession['login_time'])
+            );
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delay
+        |--------------------------------------------------------------------------
+        */
+
+        $delay = (int)$settings->get(
+            'survey_delay',
+            6
+        );
+
+        $unit = $settings->get(
+            'survey_unit',
+            'hours'
+        );
 
         switch ($unit) {
 
             case 'minutes':
+
                 $threshold = $delay * 60;
+
                 break;
 
             case 'days':
+
                 $threshold = $delay * 86400;
+
                 break;
 
             default:
+
                 $threshold = $delay * 3600;
+
         }
 
-        return $survey['connected_seconds'] >= $threshold;
+        return $connectedSeconds >= $threshold;
+    }
+
+    public function updateCurrentSessionTime(
+        int $guestId,
+        int $seconds
+    ): void {
+
+        $this->ensureGuest($guestId);
+
+        $survey = $this->repository->getByGuestId($guestId);
+
+        if (!$survey) {
+            return;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Only update if uptime increased
+        |--------------------------------------------------------------------------
+        */
+
+        if ($seconds <= (int)$survey['last_recorded_uptime']) {
+            return;
+        }
+
+        $difference =
+            $seconds -
+            (int)$survey['last_recorded_uptime'];
+
+        $this->repository->updateCurrentSessionTime(
+            $guestId,
+            $difference,
+            $seconds
+        );
     }
 
 }

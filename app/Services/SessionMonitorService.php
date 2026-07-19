@@ -71,6 +71,13 @@ class SessionMonitorService
 
             }
 
+            $elapsed = time() - strtotime($session['login_time']);
+
+            $this->survey->updateCurrentSessionTime(
+                $guest['id'],
+                $elapsed
+            );
+
             $mac = strtolower(
                 $guest['mac_address']
             );
@@ -97,6 +104,17 @@ class SessionMonitorService
 
                     );
 
+                }
+                if (isset($online[$mac])) {
+
+                    $duration = time() - strtotime($session['login_time']);
+
+                    $this->survey->recordSession(
+                        $guest['id'],
+                        $duration
+                    );
+
+                    continue;
                 }
 
             }

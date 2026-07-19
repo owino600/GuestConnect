@@ -65,13 +65,15 @@ class SurveyRepository
         string $identifier
     ): void
     {
-        $stmt = Database::connection()->prepare(
-            "UPDATE guest_surveys
-             SET
+        $stmt = Database::connection()->prepare("
+            UPDATE guest_surveys
+            SET
+                survey_provider = ?,
+                survey_identifier = ?,
                 survey_shown = 1,
                 survey_last_shown = NOW()
-             WHERE guest_id = ?"
-        );
+            WHERE guest_id = ?
+        ");
 
         $stmt->execute([
             $provider,
@@ -106,5 +108,48 @@ class SurveyRepository
     public function recordSession(int $guestId, int $seconds): void
     {
         $this->addConnectedSeconds($guestId, $seconds);
+    }
+
+    public function updateCurrentSessionTime(
+        int $guestId,
+        int $difference,
+        int $uptime
+    ): void {
+
+        $stmt = Database::connection()->prepare(
+            "
+            UPDATE guest_surveys
+            SET
+                connected_seconds =
+                    connected_seconds + ?,
+
+                last_recorded_uptime = ?
+
+            WHERE guest_id = ?
+            "
+        );
+
+        $stmt->execute([
+            $difference,
+            $uptime,
+            $guestId
+        ]);
+    }
+
+    public function updateRecordedUptime(
+        int $guestId,
+        int $seconds
+    ): void
+    {
+        $stmt = Database::connection()->prepare("
+            UPDATE guest_surveys
+            SET last_recorded_uptime = ?
+            WHERE guest_id = ?
+        ");
+
+        $stmt->execute([
+            $seconds,
+            $guestId
+        ]);
     }
 }

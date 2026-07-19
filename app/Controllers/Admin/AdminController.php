@@ -381,17 +381,27 @@ class AdminController extends Controller
         */
 
         $settings->set(
-            'survey_show_once',
-            isset($_POST['survey_show_once']) ? 1 : 0
+            'survey_frequency',
+            $_POST['survey_frequency'] ?? 'stay'
         );
 
-        Session::flash(
-            'success',
-            'Survey settings saved successfully.'
-        );
+        $settings->set(
+            'survey_frequency_days',
+            $_POST['survey_frequency_days'] ?? 2
+       );
 
-        header("Location: /admin/surveys");
+       $settings->set(
+           'survey_frequency_visits',
+           $_POST['survey_frequency_visits'] ?? 2
+       );
 
-        exit;
+       Session::flash(
+           'success',
+           'Survey settings saved successfully.'
+       );
+
+       header("Location: /admin/surveys");
+
+       exit;
     }
 }

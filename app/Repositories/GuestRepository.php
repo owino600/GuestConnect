@@ -61,4 +61,17 @@ class GuestRepository
 
         $stmt->execute([$mac]);
     }
+
+    public function findById(int $id): ?array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT *
+            FROM guests
+            WHERE id = ?"
+        );
+
+        $stmt->execute([$id]);
+
+        return $stmt->fetch() ?: null;
+    }
 }

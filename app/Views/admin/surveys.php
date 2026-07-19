@@ -228,16 +228,108 @@
 
     <div class="form-group">
 
-        <label class="checkbox-label">
+        <label>Survey Frequency</label>
+
+        <div id="surveyFrequencyContainer">
+
+            <label class="radio-option">
+                <input
+                    type="radio"
+                    name="survey_frequency"
+                    value="lifetime"
+                    <?= ($settings['survey_frequency'] ?? 'stay') == 'lifetime' ? 'checked' : '' ?>>
+                Once Lifetime
+            </label>
+
+            <label class="radio-option">
+                <input
+                    type="radio"
+                    name="survey_frequency"
+                    value="stay"
+                    <?= ($settings['survey_frequency'] ?? 'stay') == 'stay' ? 'checked' : '' ?>>
+                Once Per Stay
+            </label>
+
+            <label class="radio-option">
+                <input
+                    type="radio"
+                    name="survey_frequency"
+                    value="daily"
+                    <?= ($settings['survey_frequency'] ?? '') == 'daily' ? 'checked' : '' ?>>
+                Once Per Day
+            </label>
+
+            <label class="radio-option">
+                <input
+                    type="radio"
+                    name="survey_frequency"
+                    value="login"
+                    <?= ($settings['survey_frequency'] ?? '') == 'login' ? 'checked' : '' ?>>
+                Every Login
+            </label>
+
+            <label class="radio-option">
+                <input
+                    type="radio"
+                    name="survey_frequency"
+                    value="days"
+                    <?= ($settings['survey_frequency'] ?? '') == 'days' ? 'checked' : '' ?>>
+                Every X Days
+            </label>
+
+            <label class="radio-option">
+                <input
+                    type="radio"
+                    name="survey_frequency"
+                    value="visits"
+                    <?= ($settings['survey_frequency'] ?? '') == 'visits' ? 'checked' : '' ?>>
+                Every X Visits
+            </label>
+
+        </div>
+
+    </div>
+
+    <div
+        class="form-group"
+        id="frequencyDaysGroup"
+        style="display:none;">
+
+        <label>Repeat Every</label>
+
+        <div style="display:flex;gap:10px;">
 
             <input
-                type="checkbox"
-                name="survey_show_once"
-                <?= !empty($settings['survey_show_once']) ? 'checked' : '' ?>>
+                type="number"
+                min="1"
+                name="survey_frequency_days"
+                value="<?= htmlspecialchars($settings['survey_frequency_days'] ?? 2) ?>">
 
-            Show survey only once
+            <span style="align-self:center;">Days</span>
 
-        </label>
+        </div>
+
+    </div>
+
+
+    <div
+        class="form-group"
+        id="frequencyVisitsGroup"
+        style="display:none;">
+
+        <label>Repeat Every</label>
+
+        <div style="display:flex;gap:10px;">
+
+            <input
+                type="number"
+                min="1"
+                name="survey_frequency_visits"
+                value="<?= htmlspecialchars($settings['survey_frequency_visits'] ?? 2) ?>">
+
+            <span style="align-self:center;">Visits</span>
+
+        </div>
 
     </div>
 

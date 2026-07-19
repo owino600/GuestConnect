@@ -1,6 +1,6 @@
 <?php
 
-namespace GuestConnect\Integrations\UniFi;
+namespace GuestConnect\Controllers\Integrations\UniFi;
 
 use GuestConnect\Contracts\ControllerInterface;
 use GuestConnect\Services\UniFiService;

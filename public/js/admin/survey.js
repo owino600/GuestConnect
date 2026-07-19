@@ -140,4 +140,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateUI();
 
+    // ----------------------------
+    // Survey Frequency Logic
+   // ----------------------------
+
+    const frequencyRadios =
+        document.querySelectorAll(
+            "input[name='survey_frequency']"
+        );
+
+    const daysGroup =
+        document.getElementById(
+            "frequencyDaysGroup"
+        );
+
+    const visitsGroup =
+        document.getElementById(
+            "frequencyVisitsGroup"
+        );
+
+    function updateFrequencyUI() {
+
+        const selected =
+            document.querySelector(
+                "input[name='survey_frequency']:checked"
+            )?.value;
+
+        daysGroup.style.display =
+            selected === "days"
+                ? "block"
+                : "none";
+
+        visitsGroup.style.display =
+            selected === "visits"
+                ? "block"
+                : "none";
+
+    }
+
+    frequencyRadios.forEach(radio => {
+
+        radio.addEventListener(
+            "change",
+            updateFrequencyUI
+        );
+
+    });
+
+    updateFrequencyUI();
+
 });

@@ -83,6 +83,12 @@ class SettingsService
 
             'survey_show_once' => $this->get('survey_show_once', 0),
 
+            'survey_frequency' => $this->get('survey_frequency'),
+
+            'survey_frequency_days' => $this->get('survey_frequency_days'),
+
+            'survey_frequency_visits' => $this->get('survey_frequency_visits'),
+
             /*
             |--------------------------------------------------------------------------
             | Branding

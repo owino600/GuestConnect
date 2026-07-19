@@ -3,7 +3,7 @@
 namespace GuestConnect\Services;
 
 use GuestConnect\Contracts\ControllerInterface;
-use GuestConnect\Integrations\UniFi\UniFiController;
+use GuestConnect\Controllers\Integrations\UniFi\UniFiController;
 
 class ControllerManager
 {
