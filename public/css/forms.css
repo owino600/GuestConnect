@@ -65,7 +65,10 @@
 }
 
 .form-group input[type=text],
-
+.form-group input[type=url],
+.form-group input[type=number],
+.form-group input[type=password],
+.form-group input[type=email],
 .form-group textarea{
 
     width:100%;
@@ -84,7 +87,11 @@
 
 }
 
-.form-group input,
+.form-group input[type=text],
+.form-group input[type=number],
+.form-group input[type=url],
+.form-group input[type=password],
+.form-group input[type=email],
 .form-group select,
 .form-group textarea{
 
@@ -192,24 +199,53 @@ input[type=color]{
     font-weight:500;
 
 }
-.radio-option{
+/* ===========================
+   Survey Display Methods
+=========================== */
 
+#displayMethodContainer{
     display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    padding:12px 0;
-
-    font-weight:500;
-
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:10px;
 }
 
-.radio-option input{
+.radio-option{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 18px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    background:#fff;
+    cursor:pointer;
+    transition:.25s;
+    min-width:140px;
+}
 
-    width:18px;
+.radio-option:hover{
+    border-color:#2563eb;
+    background:#f8fbff;
+}
 
-    height:18px;
+.radio-option input[type="radio"]{
+    width:auto;
+    margin:0;
+    accent-color:#2563eb;
+}
+
+.provider-description{
+
+    display:block;
+
+    margin-top:12px;
+
+    margin-bottom:20px;
+
+    color:#6b7280;
+
+    font-size:14px;
+
+    line-height:1.5;
 
 }

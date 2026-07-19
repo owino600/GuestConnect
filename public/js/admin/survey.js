@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const provider = document.getElementById("survey_provider");
-
     const description = document.getElementById("providerDescription");
 
     const providers = {
@@ -40,57 +39,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const displayMethods = {
 
-        formbricks: [
+        formbricks: ["popup","redirect","modal"],
 
-            "popup",
+        google: ["popup","redirect"],
 
-            "redirect",
+        microsoft: ["redirect"],
 
-            "modal"
+        typeform: ["popup","redirect","embed"],
 
-        ],
+        survicate: ["popup","redirect"],
 
-        google: [
-
-            "popup",
-
-            "redirect"
-
-        ],
-
-        microsoft: [
-
-            "redirect"
-
-        ],
-
-        typeform: [
-
-            "popup",
-
-            "redirect",
-
-            "embed"
-
-        ],
-
-        survicate: [
-
-            "popup",
-
-            "redirect"
-
-        ],
-
-        custom: [
-
-            "popup",
-
-            "redirect",
-
-            "modal"
-
-        ]
+        custom: ["popup","redirect","modal"]
 
     };
 
@@ -110,75 +69,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     };
 
-    function updateUI() {
+    function renderDisplayMethods(providerName){
 
-        Object.values(sections).forEach(section => {
-
-            if (section) {
-
-                section.style.display = "none";
-
-            }
-
-        });
-
-        if (sections[provider.value]) {
-
-            sections[provider.value].style.display = "block";
-
-        }
-
-        const info = providers[provider.value];
-
-        description.innerHTML =
-
-            "<strong>" +
-
-            info.title +
-
-            "</strong><br>" +
-
-            info.text;
-       renderDisplayMethods(provider.value);
-
-    }
-
-    provider.addEventListener("change", updateUI);
-
-    updateUI();
-
-    function renderDisplayMethods(providerName) {
-
-        const container = document.getElementById(
-
-            "displayMethodContainer"
-
-        );
+        const container = document.getElementById("displayMethodContainer");
 
         container.innerHTML = "";
 
-        displayMethods[providerName].forEach(method => {
+        const methods = displayMethods[providerName] ?? [];
+
+        methods.forEach(method => {
 
             const label = document.createElement("label");
 
             label.className = "radio-option";
 
             label.innerHTML = `
-
                 <input
-
                     type="radio"
-
                     name="survey_display_method"
-
                     value="${method}"
-
-                    ${method === "popup" ? "checked" : ""}
-
+                    ${method === currentDisplayMethod ? "checked" : ""}
                 >
 
-                ${method.charAt(0).toUpperCase() + method.slice(1)}
-
+                <span>${method.charAt(0).toUpperCase() + method.slice(1)}</span>
             `;
 
             container.appendChild(label);
@@ -186,5 +99,45 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     }
+
+    function updateUI(){
+
+        Object.values(sections).forEach(section => {
+
+            if(section){
+
+                section.style.display = "none";
+
+            }
+
+        });
+
+        if(sections[provider.value]){
+
+            sections[provider.value].style.display = "block";
+
+        }
+
+        const info = providers[provider.value] ?? {
+
+            title: "Unknown",
+
+            text: ""
+
+        };
+
+        description.innerHTML =
+            "<strong>" +
+            info.title +
+            "</strong><br>" +
+            info.text;
+
+        renderDisplayMethods(provider.value);
+
+    }
+
+    provider.addEventListener("change", updateUI);
+
+    updateUI();
 
 });

@@ -2,6 +2,8 @@
 
 <form method="POST" action="/admin/surveys">
 
+    <!-- Survey Provider -->
+
     <div class="form-group">
 
         <label>Survey Provider</label>
@@ -9,40 +11,45 @@
         <select id="survey_provider" name="survey_provider">
 
             <option value="formbricks"
-                <?= ($settings['survey_provider'] ?? '') == 'formbricks' ? 'selected' : '' ?>>
+                <?= ($settings['survey_provider'] ?? '') === 'formbricks' ? 'selected' : '' ?>>
                 Formbricks
             </option>
 
             <option value="google"
-                <?= ($settings['survey_provider'] ?? '') == 'google' ? 'selected' : '' ?>>
+                <?= ($settings['survey_provider'] ?? '') === 'google' ? 'selected' : '' ?>>
                 Google Forms
             </option>
 
             <option value="microsoft"
-                <?= ($settings['survey_provider'] ?? '') == 'microsoft' ? 'selected' : '' ?>>
+                <?= ($settings['survey_provider'] ?? '') === 'microsoft' ? 'selected' : '' ?>>
                 Microsoft Forms
             </option>
 
             <option value="typeform"
-                <?= ($settings['survey_provider'] ?? '') == 'typeform' ? 'selected' : '' ?>>
+                <?= ($settings['survey_provider'] ?? '') === 'typeform' ? 'selected' : '' ?>>
                 Typeform
             </option>
 
             <option value="survicate"
-                <?= ($settings['survey_provider'] ?? '') == 'survicate' ? 'selected' : '' ?>>
+                <?= ($settings['survey_provider'] ?? '') === 'survicate' ? 'selected' : '' ?>>
                 Survicate
             </option>
 
             <option value="custom"
-                <?= ($settings['survey_provider'] ?? '') == 'custom' ? 'selected' : '' ?>>
+                <?= ($settings['survey_provider'] ?? '') === 'custom' ? 'selected' : '' ?>>
                 Custom Survey
             </option>
 
         </select>
 
-        <small id="providerDescription" class="provider-description"></small>
+        <small
+            id="providerDescription"
+            class="provider-description">
+        </small>
 
     </div>
+
+    <!-- Display Method -->
 
     <div class="form-group">
 
@@ -50,28 +57,19 @@
 
         <div id="displayMethodContainer">
 
-            <!-- Generated automatically -->
+            <!-- Generated automatically by survey.js -->
 
         </div>
 
     </div>
 
+    <!-- Formbricks -->
+
     <div id="formbricksSettings">
 
         <div class="form-group">
 
-            <label>Survey Identifier</label>
-
-            <input
-                type="text"
-                name="survey_identifier"
-                value="<?= htmlspecialchars($settings['survey_identifier'] ?? '') ?>">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Survey Base URL</label>
+            <label>Survey URL</label>
 
             <input
                 type="text"
@@ -91,7 +89,20 @@
 
         </div>
 
+        <div class="form-group">
+
+            <label>Survey Identifier</label>
+
+            <input
+                type="text"
+                name="survey_identifier"
+                value="<?= htmlspecialchars($settings['survey_identifier'] ?? '') ?>">
+
+        </div>
+
     </div>
+
+    <!-- Google Forms -->
 
     <div id="googleSettings" style="display:none;">
 
@@ -108,6 +119,8 @@
 
     </div>
 
+    <!-- Microsoft Forms -->
+
     <div id="microsoftSettings" style="display:none;">
 
         <div class="form-group">
@@ -123,32 +136,59 @@
 
     </div>
 
+    <!-- Typeform -->
+
     <div id="typeformSettings" style="display:none;">
+
         <div class="form-group">
+
             <label>Typeform URL</label>
-            <input type="text"
+
+            <input
+                type="text"
                 name="typeform_url"
                 value="<?= htmlspecialchars($settings['typeform_url'] ?? '') ?>">
+
         </div>
+
     </div>
+
+    <!-- Survicate -->
 
     <div id="survicateSettings" style="display:none;">
+
         <div class="form-group">
+
             <label>Survicate URL</label>
-            <input type="text"
+
+            <input
+                type="text"
                 name="survicate_url"
                 value="<?= htmlspecialchars($settings['survicate_url'] ?? '') ?>">
+
         </div>
+
     </div>
 
+    <!-- Custom -->
+
     <div id="customSettings" style="display:none;">
+
         <div class="form-group">
+
             <label>Custom Survey URL</label>
-            <input type="text"
+
+            <input
+                type="text"
                 name="custom_survey_url"
                 value="<?= htmlspecialchars($settings['custom_survey_url'] ?? '') ?>">
+
         </div>
+
     </div>
+
+    <!-- Timing -->
+
     <div class="form-group">
 
         <label>Show Survey After</label>
@@ -184,6 +224,8 @@
 
     </div>
 
+    <!-- Behaviour -->
+
     <div class="form-group">
 
         <label class="checkbox-label">
@@ -199,15 +241,22 @@
 
     </div>
 
-    <button type="submit" class="btn-primary">
+    <button
+        type="submit"
+        class="btn-primary">
 
         Save Survey Settings
 
     </button>
 
 </form>
-</div>
 
-</div>
+<script>
+
+const currentDisplayMethod =
+    <?= json_encode($settings['survey_display_method'] ?? 'popup') ?>;
+
+</script>
 
 <script src="/js/admin/survey.js"></script>
+
